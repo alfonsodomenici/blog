@@ -1,34 +1,25 @@
-from flask import Flask, request
-from app_service import AppService
+from flask import Flask, Response, request
+from db_manager import mysql
+from posts_resource import posts_resource
+from flask_cors import CORS
+
 import json
 
 app = Flask(__name__)
-appService = AppService();
+CORS(app)
+
+#db configuration
+app.config['MYSQL_DATABASE_USER'] = 'blog'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'blog'
+app.config['MYSQL_DATABASE_DB'] = 'db_post'
+app.config['MYSQL_DATABASE_HOST'] = '192.168.12.209'
+
+mysql.init_app(app)
+
+app.register_blueprint(posts_resource)
 
 
 @app.route('/')
 def home():
-    return "App Works!!!"
-
-
-@app.route('/api/tasks')
-def tasks():
-    return appService.get_tasks()
-
-@app.route('/api/task', methods=['POST'])
-def create_task():
-    request_data = request.get_json()
-    task = request_data['task']
-    return appService.create_task(task)
-
-
-@app.route('/api/task', methods=['PUT'])
-def update_task():
-    request_data = request.get_json()
-    return appService.update_task(request_data['task'])
-
-
-@app.route('/api/task/<int:id>', methods=['DELETE'])
-def delete_task(id):
-    return appService.delete_task(id)
-
+    response = Response("Blog backend Works!!!")
+    return response
