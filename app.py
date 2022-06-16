@@ -6,7 +6,8 @@ from flask_cors import CORS
 import json
 
 app = Flask(__name__)
-CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 #db configuration
 app.config['MYSQL_DATABASE_USER'] = 'blog'

@@ -1,9 +1,9 @@
 
 from flask import Blueprint,request,json,jsonify
-
-
 from post_service import PostService
 from flask import jsonify,Response
+from flask_cors import CORS, cross_origin
+
 posts_resource = Blueprint('posts_resource',__name__)
 postService = PostService()
 
@@ -11,7 +11,7 @@ postService = PostService()
 def all(): 
     return jsonify(postService.all())
 
-@posts_resource.route('/api/posts/<int:postId>/',methods=['GET'])
+@posts_resource.route('/api/posts/<int:postId>/',methods=['GET','OPTIONS'])
 def find(postId):
     found = postService.find(postId)
     if found is None:
