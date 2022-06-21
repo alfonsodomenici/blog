@@ -5,14 +5,16 @@ from flask import jsonify,Response
 from flask_cors import CORS, cross_origin
 
 posts_resource = Blueprint('posts_resource',__name__)
+cors = CORS(posts_resource)
 postService = PostService()
 
 @posts_resource.route('/api/posts/',methods=['GET'])
 def all(): 
     return jsonify(postService.all())
 
-@posts_resource.route('/api/posts/<int:postId>/',methods=['GET','OPTIONS'])
+@posts_resource.route('/api/posts/<int:postId>/',methods=['GET'])
 def find(postId):
+    print(request.method)
     found = postService.find(postId)
     if found is None:
         return Response(status=404)
