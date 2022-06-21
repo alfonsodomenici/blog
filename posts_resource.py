@@ -14,7 +14,6 @@ def all():
 
 @posts_resource.route('/api/posts/<int:postId>/',methods=['GET'])
 def find(postId):
-    print(request.method)
     found = postService.find(postId)
     if found is None:
         return Response(status=404)
